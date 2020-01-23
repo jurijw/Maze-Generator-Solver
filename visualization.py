@@ -4,7 +4,7 @@ import pygame
 from maze_generation import init_grid, generate_maze_recursive
 
 # Constants
-n, m = 40, 40
+n, m = 10, 10
 num_cells = n * m
 size = width, height = 800, 800
 cell_width, cell_height = width // n, height // m
@@ -47,6 +47,17 @@ def main():
 
     # Initialize the maze grid
     grid = init_grid(n, m)
+    # Display the maze grid
+    display(screen, grid)
+    pygame.display.update()
+
+    # Choose a random starting cell
+    cell = grid[5][5]
+    cell.visit()
+    list_of_grids = []
+    # Run the maze generating algorithm
+    generate_maze_recursive(grid, cell, num_cells, list_of_grids)
+    print(len(list_of_grids))
 
     # Game loop
     end_program = False
@@ -57,9 +68,13 @@ def main():
                 pygame.quit()
                 sys.exit(0)
 
-        # Display the maze grid
+        # Display the grid again
         display(screen, grid)
         pygame.display.update()
+
+        # for grid in list_of_grids:
+        #     display(screen, grid)
+        #     pygame.time.sleep(50)
 
 
 if __name__ == "__main__":
