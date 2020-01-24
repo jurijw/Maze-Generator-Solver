@@ -28,5 +28,5 @@ Lastly, pygame may crash if you do not let the algorithm find its way to the end
 
 <h3>Example Images</h3>
 
-![Algorithm In Progress](/images/example_img1.png)
-![Terminated algorithm](/images/example_img2.png)
+![Algorithm In Progress](/images/example_img1.PNG)
+![Terminated algorithm](/images/example_img2.PNG)
