@@ -9,7 +9,7 @@ from maze_generation import init_grid, generate_maze_recursive
 
 # Consider decreasing the maze size if memory may be an 
 # issue rather than increasing the recursion limit.
-sys.setrecursionlimit(10000)
+sys.setrecursionlimit(5000)
 # Change window start position
 os.environ['SDL_VIDEO_WINDOW_POS'] = '20, 50'
 
@@ -19,7 +19,7 @@ num_cells = n * m
 size = width, height = 800, 800
 cell_width, cell_height = width // n, height // m
 line_width = 1
-delay = 0
+delay = 0 # delay in miliseconds
 
 # Colors
 black = 0, 0, 0
