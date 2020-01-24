@@ -15,10 +15,14 @@ class Cell:
         # Set the right and top cell walls to be True
         self.right = True
         self.top = True
+        # Set start and stop properties
+        self.start = False
+        self.end = False
 
-        # Attributes for maze generation
+        # Attributes for maze generation and solving
         self.visited = False
         self.neighbors = []  # list of neighboring cells
+        self.open_neighbors = [] # list of neighboring cells with no wall between
 
     def __repr__(self):
         return f"Cell({self.x}, {self.y})"
@@ -53,9 +57,9 @@ def init_grid(n, m):
 
     # Loop through the grid once more and add each cell's neighbors
     # to their neighbors attribute - This will come in handy
+    vectors_to_neighbors = ([1, 0], [0, 1], [-1, 0], [0, -1])
     for j, row in enumerate(grid):
         for i, cell in enumerate(row):
-            vectors_to_neighbors = ([1, 0], [0, 1], [-1, 0], [0, -1])
             for vector in vectors_to_neighbors:
                 dx, dy = vector
                 new_x, new_y = i + dx, j + dy
@@ -123,7 +127,7 @@ def generate_maze_recursive(grid, cell, num_cells, list_of_grids=None):
     ]
 
     # If there are unvisited neighbors
-    if len(unvisited_neighbors) > 0:
+    if unvisited_neighbors != []:
         for _ in range(len(unvisited_neighbors)):
 
             # Double check that all unvisited neighbors are actually unvisited.
@@ -133,7 +137,7 @@ def generate_maze_recursive(grid, cell, num_cells, list_of_grids=None):
                 neighbor for neighbor in cell.neighbors if not neighbor.visited
             ]
             # If no neighbors are unvisited return False
-            if len(unvisited_neighbors) == 0:
+            if unvisited_neighbors == []:
                 return False
 
             # Otherwise pick a random unvisited neighbor/cell
