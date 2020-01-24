@@ -1,7 +1,8 @@
 <h1> Maze Generator and Solver </h1>
-Python program to generate mazes and solve them using backtracking. Uses pygame to visualize backtracking algorithm in progress.
+Python program to generate mazes and solve them using a recursive backtracking algorithm. Uses pygame to visualize backtracking algorithm in progress. The algorithm for generating and solving the maze are almost like molds of one another.
 
-Inspired by [u/Enguzelharf](https://www.reddit.com/user/Enguzelharf/)'s [reddit post](https://www.reddit.com/r/Python/comments/empp5x/oc_updated_version_of_my_recent_maze_finding/)
+
+Inspired by [u/enguzelharf](https://www.reddit.com/user/Enguzelharf/)'s [reddit post](https://www.reddit.com/r/Python/comments/empp5x/oc_updated_version_of_my_recent_maze_finding/)
 
 Two seperate python files are contained. 
 
@@ -24,3 +25,8 @@ python's maximum recursion limit has been exceeded using `sys.setrecursionlimit(
 A delay between each step can be introduced by setting `delay` to the desired amount of delay in miliseconds.
 
 Lastly, pygame may crash if you do not let the algorithm find its way to the end. Just force quit it in this case. This is done so as to not have to check for events in `pygame.event.get()` in every step of the algorithm.
+
+Example Images
+
+![Algorithm In Progress](images/example_img1.png)
+![Terminated algorithm](images/example_img2.png)
