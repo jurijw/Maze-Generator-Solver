@@ -1,8 +1,9 @@
 <h1> Maze Generator and Solver </h1>
 <h3>Description</h3>
-Python program to generate mazes and solve them using a recursive backtracking approach. Uses pygame to visualize backtracking algorithm in progress. \n
+Python program to generate mazes and solve them using a recursive backtracking approach. Uses pygame to visualize backtracking algorithm in progress. 
 
-Inspired by [u/enguzelharf](https://www.reddit.com/user/Enguzelharf/)'s [reddit post](https://www.reddit.com/r/Python/comments/empp5x/oc_updated_version_of_my_recent_maze_finding/)
+
+_Inspired by_ [u/enguzelharf](https://www.reddit.com/user/Enguzelharf/)'s [reddit post](https://www.reddit.com/r/Python/comments/empp5x/oc_updated_version_of_my_recent_maze_finding/)
 
 <h3>Notes</h3>
 Two seperate python files are contained. 
