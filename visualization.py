@@ -1,52 +1,59 @@
+import os
 import sys
 import pygame
 import numpy as np
+# DEBUG - uncomment for consistent results
+# np.random.seed(0)
 
 from maze_generation import init_grid, generate_maze_recursive
 
 # Consider decreasing the maze size if memory may be an 
 # issue rather than increasing the recursion limit.
-import sys
 sys.setrecursionlimit(10000)
+# Change window start position
+os.environ['SDL_VIDEO_WINDOW_POS'] = '20, 50'
 
 # Constants
-n, m = 25, 25
+n, m = 50, 50
 num_cells = n * m
 size = width, height = 800, 800
 cell_width, cell_height = width // n, height // m
-line_width = 4
+line_width = 1
+delay = 0
+
 # Colors
 black = 0, 0, 0
 white = 255, 255, 255
-red = 255, 0, 0
-green = 0, 255, 0
-blue = 0, 0, 255
-light_blue = 100, 100, 255
-grey = 200, 200, 200
+red = 100, 0, 0
+green = 0, 100, 40
+blue = 100, 100, 255
+light_green = 0, 255, 100
 
 
 def display(screen, grid, color_squares=False):
+    """
+    Displays the current grid on a pygame screen object by drawing
+    each cell's walls. If color_squares is set to True, each square
+    in the grid will be colored according to whether it is the start,
+    the, finish, or whether or not it has been visited.
+    Args:
+    screen -> pygame.Screen
+    grid -> List[List[Cell]]
+    color_squares -> Bool
+    """
     # Set the background to white
-    screen.fill(grey)
+    screen.fill(white)
     # Draw the top and the right walls of each cell
     for row in grid:
         for cell in row:
             if cell.top:
                 # Draw a line along the top of the cell
-                # start_pos = cell.x * cell_width, cell.y * cell_height
-                # end_pos = (cell.x + 1) * cell_width, cell.y * cell_height
-                # pygame.draw.line(screen, black, start_pos, end_pos, line_width)
-
                 start_pos = cell.x * cell_width, cell.y * cell_height - line_width
                 dimensions = cell_width, line_width * 2
-                end_pos = (cell.x + 1) * cell_width, cell.y * cell_height + line_width
                 pygame.draw.rect(screen, black, (start_pos, dimensions))
+
             if cell.right:
                 # Draw a line along the right side of the cell
-                # start_pos = (cell.x + 1) * cell_width, cell.y * cell_height
-                # end_pos = (cell.x + 1) * cell_width, (cell.y + 1) * cell_height
-                # pygame.draw.line(screen, black, start_pos, end_pos, line_width)
-
                 start_pos = (cell.x + 1) * cell_width - line_width, cell.y * cell_height
                 dimensions = line_width * 2, cell_height
                 pygame.draw.rect(screen, black, (start_pos, dimensions))
@@ -55,7 +62,9 @@ def display(screen, grid, color_squares=False):
             if color_squares:
                 # Set the fill color of the square if it has been visited
                 if cell.visited or cell.start or cell.end:
-                    fill_color = light_blue
+                    fill_color = blue
+                    if cell.solution:
+                        fill_color = light_green
                     # If it is the start or stop override the color
                     if cell.start:
                         fill_color = green
@@ -68,16 +77,9 @@ def display(screen, grid, color_squares=False):
                     # Fill the square
                     pygame.draw.rect(screen, fill_color, (top_left, dimensions))
 
-    # Draw the left and bottom of the entire grid
-    pygame.draw.line(screen, black, (0, 0), (0, m * cell_height), line_width)
-    pygame.draw.line(
-        screen,
-        black,
-        (0, m * cell_height),
-        (n * cell_width, m * cell_height),
-        line_width,
-    )
-
+    # Draw the grid outline
+    pygame.draw.rect(screen, black, (0, 0, width, height), line_width * 2)
+   
 
 def reset_visited_attributes(grid):
     """
@@ -133,16 +135,22 @@ def init_solve(grid):
                         cell.open_neighbors.append(potential_neighbor)
 
     
-def solve_maze(screen, grid, cell):
+def solve_maze(screen, grid, cell, solution_order=None):
     """
     Takes a grid object containing Cell objects in a 2d list,
     recursively solves the maze with backtracking starting from 
     the initially passed cell argument. Displays the progress 
-    on a pygame screen object.
+    on a pygame screen object. solution_order is used to track 
+    the correct order of the algorithm. If no argument is passed
+    only the order of visited cells will be visualized.
     Args:
     screen -> pygame.Screen
     grid -> List[List[Cell]]
     cell -> Cell
+    solution_order -> List[] / (None)
+    Returns:
+    True if maze has been solved
+    else False
     """
 
     # Base case - end is found
@@ -168,22 +176,36 @@ def solve_maze(screen, grid, cell):
             rand_neighbor = np.random.choice(unvisited_neighbors)
             # Mark the cell as visited
             rand_neighbor.visited = True
+            
+            if type(solution_order) == list:
+                # Assume it to be part of the solution
+                rand_neighbor.solution = True
+                # Add it to the solution order list
+                solution_order.append(rand_neighbor)
 
             # Update the display
             display(screen, grid, True)
             pygame.display.update()
+            # Add a delay
+            pygame.time.delay(delay)
 
             # Save the current cell and recursively call the 
             # function with the chosen random neighbor as the new cell
             original_cell = cell
             cell = rand_neighbor
-
+            
             # If the path works given the random neighor cell as an argument
             # we return True, otherwise we reset the cell to the original 
-            if solve_maze(screen, grid, cell):
+            if solve_maze(screen, grid, cell, solution_order):
                 return True
             else:
+                # Otherwise reset the cell and remove it from the solution order
                 cell = original_cell
+
+                if type(solution_order) == list:
+                    solution_order[-1].solution = False
+                    solution_order.pop()
+                    
     # If there are no more unvisited accessible neighbors available then all paths 
     # down this tree have been exhausted. In this case we return False.
     else: 
@@ -220,8 +242,8 @@ def main():
 
     # Reset the visited status of the cells as well as load all of their accessible neighbors
     init_solve(grid)
-
-
+    start_cell.visited = True
+    solution_order = [start_cell]
 
     # Game loop
     end_program = False
@@ -232,8 +254,7 @@ def main():
                 pygame.quit()
                 sys.exit(0)
 
-        solve_maze(screen, grid, start_cell)
-
+        solve_maze(screen, grid, start_cell, solution_order)
 
 if __name__ == "__main__":
     pygame.init()

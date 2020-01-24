@@ -20,7 +20,8 @@ class Cell:
         self.end = False
 
         # Attributes for maze generation and solving
-        self.visited = False
+        self.visited = False # Has the cell been visited / checked
+        self.solution = False # Is it part of the solution steps
         self.neighbors = []  # list of neighboring cells
         self.open_neighbors = [] # list of neighboring cells with no wall between
 
