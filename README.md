@@ -30,6 +30,6 @@ Lastly, pygame may crash if you do not let the algorithm find its way to the end
 
 <h3>Example Images</h3>
 <h4>Algorithm in Process</h4>
-![Algorithm In Progress](https://github.com/jurijw/Maze-Generator-Solver/blob/master/images/example_img1.PNG)
+![Algorithm In Progress](images/example_img1.PNG)
 <h4>Terminated Algorithm</h4>
-![Terminated algorithm](https://github.com/jurijw/Maze-Generator-Solver/blob/master/images/example_img2.PNG)
+![Terminated algorithm](images/example_img2.PNG)
