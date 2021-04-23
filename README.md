@@ -18,8 +18,8 @@ During the visualization, cells are marked depending on their state.
 * White if unvisited
 * Blue if visited
 * Light green if part of current path
-* Dark green if start
-* Red if Finish
+* Dark green if starting node
+* Red if terminal node
 
 `n` and `m` - the number of cells in a row and column, respectively, are set to a default of 50 each. In order to allow for this, as well as even bigger mazes,
 python's maximum recursion limit has been exceeded using `sys.setrecursionlimit()`. 
@@ -30,6 +30,6 @@ Lastly, pygame may crash if you do not let the algorithm find its way to the end
 
 <h3>Example Images</h3>
 <h4>Algorithm in Process</h4>
-![Algorithm In Progress](/images/example_img1.PNG)
+![Algorithm In Progress](https://github.com/jurijw/Maze-Generator-Solver/blob/master/images/example_img1.PNG)
 <h4>Terminated Algorithm</h4>
-![Terminated algorithm](/images/example_img2.PNG)
+![Terminated algorithm](https://github.com/jurijw/Maze-Generator-Solver/blob/master/images/example_img2.PNG)
